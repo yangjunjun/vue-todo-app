@@ -10,7 +10,12 @@
         <li v-for="todo in fixedTodos" :key="todo.id">
           <!-- 是否已完成 -->
           <input type="checkbox" v-model="todo.completed" />
-          <input v-if="todo === currentEditTodo" v-model="oldEditTodo.title" />
+          <input
+            v-if="todo === currentEditTodo"
+            v-model="oldEditTodo.title"
+            @blur="cancelEditTodo()"
+            @keyup.enter="confirmEditTodo()"
+          />
           <span v-else>{{ todo.id }} | {{ todo.title }}</span>
 
           <template v-if="todo === currentEditTodo">
@@ -55,16 +60,16 @@ export default {
     };
   },
   computed: {
-    fixedTodos () {
-      return this.todos.filter(item => {
+    fixedTodos() {
+      return this.todos.filter((item) => {
         if (this.filterType === 'all') {
-          return true
+          return true;
         } else if (this.filterType === 'completed') {
-          return item.completed
+          return item.completed;
         } else {
-          return !item.completed
+          return !item.completed;
         }
-      })
+      });
     },
   },
   methods: {
@@ -110,8 +115,8 @@ export default {
     clearAllComplete() {
       this.todos = this.todos.filter((item) => !item.completed);
     },
-    show (type) {
-      this.filterType = type
+    show(type) {
+      this.filterType = type;
     },
   },
 };
